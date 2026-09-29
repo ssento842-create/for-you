@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+
+<html lang="mn">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>For You</title>  <style>  
+* {  
+    box-sizing: border-box;  
+    -webkit-tap-highlight-color: transparent;  
+}  
+  
+body {  
+    margin: 0;  
+    min-height: 100vh;  
+  
+    display: flex;  
+    justify-content: center;  
+    align-items: center;  
+  
+    overflow: hidden;  
+  
+    font-family:  
+        -apple-system,  
+        BlinkMacSystemFont,  
+        "SF Pro Display",  
+        "Helvetica Neue",  
+        Arial,  
+        sans-serif;  
+  
+    background:  
+        radial-gradient(  
+            circle at 50% 20%,  
+            #ffe1ea 0%,  
+            #f8f2f5 38%,  
+            #eef0f5 75%,  
+            #e7e9ef 100%  
+        );  
+}  
+  
+/* Soft background glow */  
+  
+body::before {  
+    content: "";  
+  
+    position: fixed;  
+  
+    width: 350px;  
+    height: 350px;  
+  
+    left: -100px;  
+    top: -100px;  
+  
+    border-radius: 50%;  
+  
+    background: #ffb8ce;  
+  
+    filter: blur(90px);  
+  
+    opacity: .45;  
+}  
+  
+body::after {  
+    content: "";  
+  
+    position: fixed;  
+  
+    width: 350px;  
+    height: 350px;  
+  
+    right: -120px;  
+    bottom: -100px;  
+  
+    border-radius: 50%;  
+  
+    background: #cbd5ff;  
+  
+    filter: blur(90px);  
+  
+    opacity: .5;  
+}  
+  
+  
+/* Main iOS glass card */  
+  
+.card {  
+    position: relative;  
+  
+    width: min(88%, 430px);  
+  
+    padding: 42px 28px 35px;  
+  
+    text-align: center;  
+  
+    border-radius: 34px;  
+  
+    background:  
+        rgba(255,255,255,.58);  
+  
+    backdrop-filter:  
+        blur(35px)  
+        saturate(170%);  
+  
+    -webkit-backdrop-filter:  
+        blur(35px)  
+        saturate(170%);  
+  
+    border:  
+        1px solid rgba(255,255,255,.9);  
+  
+    box-shadow:  
+        0 30px 80px rgba(70,60,80,.18),  
+        inset 0 1px 2px rgba(255,255,255,.95);  
+  
+    animation:  
+        cardIn .8s cubic-bezier(.2,.8,.2,1);  
+}  
+  
+@keyframes cardIn {  
+  
+    from {  
+        opacity: 0;  
+  
+        transform:  
+            translateY(35px)  
+            scale(.92);  
+    }  
+  
+    to {  
+        opacity: 1;  
+  
+        transform:  
+            translateY(0)  
+            scale(1);  
+    }  
+}  
+  
+  
+/* ==================================================  
+   GLASS 3D HEART  
+   ================================================== */  
+  
+.heart-scene {  
+  
+    width: 170px;  
+    height: 170px;  
+  
+    margin: 0 auto 15px;  
+  
+    display: flex;  
+  
+    justify-content: center;  
+    align-items: center;  
+  
+    perspective: 700px;  
+  
+    animation:  
+        sceneFloat 4s ease-in-out infinite;  
+}  
+  
+@keyframes sceneFloat {  
+  
+    0%,100% {  
+        transform: translateY(0);  
+    }  
+  
+    50% {  
+        transform: translateY(-9px);  
+    }  
+}  
+  
+  
+/* Heart shape */  
+  
+.glass-heart {  
+  
+    position: relative;  
+  
+    width: 100px;  
+    height: 100px;  
+  
+    transform:  
+        rotate(-45deg)  
+        rotateX(8deg)  
+        rotateY(-8deg);  
+  
+    border-radius:  
+        20px 8px 20px 8px;  
+  
+    background:  
+        linear-gradient(  
+            145deg,  
+            rgba(255,255,255,.95),  
+            rgba(255,188,211,.62) 42%,  
+            rgba(255,112,157,.45) 100%  
+        );  
+  
+    border:  
+        2px solid rgba(255,255,255,.9);  
+  
+    box-shadow:  
+  
+        /* Outer glow */  
+        0 15px 35px rgba(255,93,142,.25),  
+  
+        /* Glass edge */  
+        inset 3px 3px 8px rgba(255,255,255,.9),  
+  
+        inset -5px -7px 12px rgba(255,89,140,.18);  
+  
+    animation:  
+        heartBeat 2s ease-in-out infinite;  
+  
+    transform-style: preserve-3d;  
+}  
+  
+  
+/* Two upper heart lobes */  
+  
+.glass-heart::before,  
+.glass-heart::after {  
+  
+    content: "";  
+  
+    position: absolute;  
+  
+    width: 100px;  
+    height: 100px;  
+  
+    border-radius: 50%;  
+  
+    background:  
+        linear-gradient(  
+            145deg,  
+            rgba(255,255,255,.95),  
+            rgba(255,185,208,.55)  
+        );  
+  
+    border:  
+        2px solid rgba(255,255,255,.8);  
+  
+    box-shadow:  
+        inset 3px 3px 8px rgba(255,255,255,.85),  
+        inset -4px -5px 10px rgba(255,90,140,.12);  
+}  
+  
+.glass-heart::before {  
+  
+    top: -50px;  
+    left: 0;  
+}  
+  
+.glass-heart::after {  
+  
+    top: 0;  
+    left: 50px;  
+}  
+  
+  
+/* Shine */  
+  
+.heart-shine {  
+  
+    position: absolute;  
+  
+    width: 27px;  
+    height: 50px;  
+  
+    left: 32px;  
+    top: 25px;  
+  
+    border-radius: 50%;  
+  
+    background:  
+        linear-gradient(  
+            180deg,  
+            rgba(255,255,255,.95),  
+            rgba(255,255,255,0)  
+        );  
+  
+    filter: blur(2px);  
+  
+    transform:  
+        rotate(45deg);  
+  
+    z-index: 5;  
+  
+    pointer-events: none;  
+}  
+  
+  
+/* Heart animation */  
+  
+@keyframes heartBeat {  
+  
+    0%,100% {  
+  
+        transform:  
+            rotate(-45deg)  
+            rotateX(8deg)  
+            rotateY(-8deg)  
+            scale(1);  
+    }  
+  
+    50% {  
+  
+        transform:  
+            rotate(-45deg)  
+            rotateX(8deg)  
+            rotateY(-8deg)  
+            scale(1.08);  
+    }  
+}  
+  
+  
+/* 3D reflection */  
+  
+.heart-reflection {  
+  
+    position: absolute;  
+  
+    width: 125px;  
+    height: 30px;  
+  
+    bottom: 5px;  
+  
+    background:  
+        radial-gradient(  
+            ellipse,  
+            rgba(255,125,165,.22),  
+            transparent 70%  
+        );  
+  
+    filter: blur(8px);  
+  
+    transform:  
+        rotateX(70deg);  
+  
+    pointer-events: none;  
+}  
+  
+  
+/* Text */  
+  
+h1 {  
+  
+    margin: 8px 0 12px;  
+  
+    font-size: 28px;  
+  
+    font-weight: 700;  
+  
+    letter-spacing: -.7px;  
+  
+    color: #17171a;  
+}  
+  
+p {  
+  
+    margin: 0 auto;  
+  
+    max-width: 330px;  
+  
+    color: #68686d;  
+  
+    font-size: 16px;  
+  
+    line-height: 1.65;  
+}  
+  
+.question {  
+  
+    margin-top: 25px;  
+  
+    font-size: 24px;  
+  
+    font-weight: 700;  
+  
+    color: #18181b;  
+}  
+  
+  
+/* Buttons */  
+  
+.buttons {  
+  
+    display: flex;  
+  
+    gap: 12px;  
+  
+    margin-top: 28px;  
+}  
+  
+button {  
+  
+    flex: 1;  
+  
+    height: 54px;  
+  
+    border: none;  
+  
+    border-radius: 18px;  
+  
+    font-family: inherit;  
+  
+    font-size: 17px;  
+  
+    font-weight: 600;  
+  
+    cursor: pointer;  
+  
+    transition:  
+        transform .15s ease,  
+        box-shadow .15s ease;  
+}  
+  
+button:active {  
+  
+    transform:  
+        scale(.94);  
+}  
+  
+  
+/* YES */  
+  
+#yes {  
+  
+    color: white;  
+  
+    background:  
+        linear-gradient(  
+            135deg,  
+            #ff477e,  
+            #ff719b  
+        );  
+  
+    box-shadow:  
+        0 10px 25px rgba(255,70,125,.28),  
+        inset 0 1px 1px rgba(255,255,255,.5);  
+}  
+  
+  
+/* NO */  
+  
+#no {  
+  
+    color: #333;  
+  
+    background:  
+        rgba(255,255,255,.75);  
+  
+    border:  
+        1px solid rgba(0,0,0,.06);  
+  
+    box-shadow:  
+        0 10px 25px rgba(0,0,0,.07);  
+}  
+  
+  
+/* Result */  
+  
+#result {  
+  
+    display: none;  
+  
+    margin-top: 22px;  
+  
+    padding: 15px;  
+  
+    border-radius: 17px;  
+  
+    background:  
+        rgba(255,255,255,.7);  
+  
+    color: #ff477e;  
+  
+    font-size: 15px;  
+  
+    font-weight: 600;  
+  
+    animation:  
+        resultIn .35s ease;  
+}  
+  
+@keyframes resultIn {  
+  
+    from {  
+        opacity: 0;  
+        transform: scale(.9);  
+    }  
+  
+    to {  
+        opacity: 1;  
+        transform: scale(1);  
+    }  
+}  
+  
+  
+/* Floating hearts */  
+  
+.floating {  
+  
+    position: fixed;  
+  
+    bottom: -40px;  
+  
+    pointer-events: none;  
+  
+    animation:  
+        floatUp 4.5s linear forwards;  
+}  
+  
+@keyframes floatUp {  
+  
+    to {  
+  
+        transform:  
+            translateY(-110vh)  
+            rotate(30deg);  
+  
+        opacity: 0;  
+    }  
+}  
+</style>  </head>  <body>  <div class="card">  <!-- 3D GLASS HEART -->  
+
+<div class="heart-scene">  
+
+    <div class="glass-heart">  
+
+        <div class="heart-shine"></div>  
+
+    </div>  
+
+    <div class="heart-reflection"></div>  
+
+</div>  
+
+
+<h1>  
+    Чамд нэг зүйл хэлэх гэсэн юм...  
+</h1>  
+
+
+<p>  
+    Чи миний хувьд онцгой хүн болсон.  
+    Тиймээс чамаас нэг зүйл асуумаар байна.  
+</p>  
+
+
+<div class="question">  
+    Надтай үерхэх үү?  
+</div>  
+
+
+<div class="buttons">  
+
+    <button  
+        id="yes"  
+        onclick="sendAnswer('Тийм ээ 💗')">  
+
+        Тийм  
+
+    </button>  
+
+
+    <button  
+        id="no"  
+        onclick="sendAnswer('Үгүй')">  
+
+        Үгүй  
+
+    </button>  
+
+</div>  
+
+
+<div id="result"></div>
+
+</div>  <script>  
+  
+/*  
+========================================  
+ DISCORD WEBHOOK  
+========================================  
+*/  
+  
+const WEBHOOK_URL =  
+    "https://discord.com/api/webhooks/1554390871036923946/IKigWnt8bZVDBAWbgDS96BTqXCWt5JNeAWG75Ous1XJCS9XWy37upmfnQJbvhnLNTOPv";  
+  
+  
+function sendAnswer(answer) {  
+  
+    const result =  
+        document.getElementById("result");  
+  
+  
+    result.style.display = "block";  
+  
+    result.innerHTML =  
+        "Хариуг илгээж байна...";  
+  
+  
+    /*  
+       Send answer to Discord  
+    */  
+  
+    fetch(WEBHOOK_URL, {  
+  
+        method: "POST",  
+  
+        headers: {  
+  
+            "Content-Type":  
+                "application/json"  
+  
+        },  
+  
+        body: JSON.stringify({  
+  
+            content:  
+                "💌 **Crush-ийн хариу ирлээ!**\n\n" +  
+                "Хариулт: **" +  
+                answer +  
+                "**"  
+  
+        })  
+  
+    })  
+  
+  
+    .then(response => {  
+  
+        if (response.ok) {  
+  
+            result.innerHTML =  
+                "Хариулт илгээгдлээ ✨";  
+  
+        }  
+  
+        else {  
+  
+            result.innerHTML =  
+                "Алдаа гарлаа.";  
+  
+        }  
+  
+    })  
+  
+  
+    .catch(() => {  
+  
+        result.innerHTML =  
+            "Алдаа гарлаа.";  
+  
+    });  
+  
+  
+    /*  
+       Floating glass-like hearts  
+    */  
+  
+    for (let i = 0; i < 25; i++) {  
+  
+        setTimeout(() => {  
+  
+            createHeart();  
+  
+        }, i * 70);  
+  
+    }  
+  
+}  
+  
+  
+function createHeart() {  
+  
+    const heart =  
+        document.createElement("div");  
+  
+    heart.className =  
+        "floating";  
+  
+    heart.innerHTML =  
+        ["♡","♥","✦","✧"]  
+        [Math.floor(Math.random() * 4)];  
+  
+    heart.style.left =  
+        Math.random() * 100 + "vw";  
+  
+    heart.style.fontSize =  
+        (18 + Math.random() * 25) + "px";  
+  
+    heart.style.color =  
+        "#ff8bab";  
+  
+    document.body.appendChild(heart);  
+  
+  
+    setTimeout(() => {  
+  
+        heart.remove();  
+  
+    }, 4500);  
+  
+}  
+  
+</script>  </body>  
+</html>
